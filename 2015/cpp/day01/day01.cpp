@@ -14,7 +14,9 @@ int main()
     }
 
     char ch;
+    unsigned int step = 1;
     int floor = 0;
+    unsigned int enter_basement = 0;
 
     while (file.get(ch))
     {
@@ -31,10 +33,20 @@ int main()
             cerr << "Error: Unexpected Input." << endl;
             return 1;
         }
+
+        if (enter_basement == 0 && floor < 0)
+        {
+            enter_basement = step;
+        }
+
+        step++;
     }
 
     cout << "Part 1:" << endl
          << floor << endl;
+
+    cout << "Part 2:" << endl
+         << enter_basement << endl;
 
     file.close();
 
