@@ -1,5 +1,6 @@
 # Folder
 inputs/
+build/
 
 # Prerequisites
 *.d
