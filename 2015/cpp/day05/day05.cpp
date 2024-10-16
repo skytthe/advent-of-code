@@ -17,7 +17,8 @@ int main()
 
     string line;
 
-    int nice_string_count = 0;
+    int nice_string_count1 = 0;
+    int nice_string_count2 = 0;
 
     set<char> vowels{'a', 'e', 'i', 'o', 'u'};
     int vowel_count = 0;
@@ -49,16 +50,42 @@ int main()
 
         if (vowel_count >= 3 && is_double_letter && !is_bad_string)
         {
-            nice_string_count++;
+            nice_string_count1++;
         }
 
         vowel_count = 0;
         is_double_letter = false;
         is_bad_string = false;
+
+        // part 2
+        set<string> letter_pairs;
+        bool is_letter_pair_rule = false;
+        bool is_repeat_rule = false;
+
+        for (int i = 2; i < line.size(); i++)
+        {
+
+            if (letter_pairs.count(string(1, line.at(i - 1)) + line.at(i)))
+            {
+                is_letter_pair_rule = true;
+            }
+            letter_pairs.insert(string(1, line.at(i - 2)) + line.at(i - 1));
+            if (line.at(i - 2) == line.at(i))
+            {
+                is_repeat_rule = true;
+            }
+        }
+        if (is_letter_pair_rule && is_repeat_rule)
+        {
+            nice_string_count2++;
+        }
     }
 
     cout << "Part 1:" << endl
-         << nice_string_count << endl;
+         << nice_string_count1 << endl;
+
+    cout << "Part 2:" << endl
+         << nice_string_count2 << endl;
 
     return 0;
 }
