@@ -27,27 +27,43 @@ int main()
 {
     const std::string input = "ckczppom";
 
-    std::string result;
+    std::string result1;
+    std::string result2;
 
     string tmp;
     int step = 1;
+    int part1 = -1;
+    int part2 = -1;
     while (true)
     {
         tmp = input + to_string(step);
 
-        result = md5(tmp);
+        result2 = md5(tmp);
 
-        if (all_of(result.begin(), result.begin() + 5, [](char c)
+        if (all_of(result2.begin(), result2.begin() + 5, [](char c)
                    { return c == '0'; }))
         {
-            break;
+            if (part1 == -1)
+            {
+                part1 = step;
+                result1 = result2;
+            }
+            if (result2.at(5) == '0')
+            {
+                part2 = step;
+                break;
+            }
         }
         step++;
     }
 
     cout << "Part 1:" << endl
-         << step << endl
-         << "hash: " << result << endl;
+         << part1 << endl
+         << "hash: " << result1 << endl;
+
+    cout << "Part 2:" << endl
+         << part2 << endl
+         << "hash: " << result2 << endl;
 
     return 0;
 }
