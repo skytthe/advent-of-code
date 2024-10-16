@@ -26,7 +26,8 @@ int main()
     }
 
     // false off, true on
-    bool matrix[SIZE_Y][SIZE_X] = {false};
+    bool matrix1[SIZE_Y][SIZE_X] = {false};
+    int matrix2[SIZE_Y][SIZE_X] = {false};
 
     string line;
     action act;
@@ -72,13 +73,19 @@ int main()
                 switch (act)
                 {
                 case TOGGLE:
-                    matrix[y][x] = !matrix[y][x];
+                    matrix1[y][x] = !matrix1[y][x];
+                    matrix2[y][x] += 2;
                     break;
                 case TURN_ON:
-                    matrix[y][x] = true;
+                    matrix1[y][x] = true;
+                    matrix2[y][x] += 1;
                     break;
                 case TURN_OFF:
-                    matrix[y][x] = false;
+                    matrix1[y][x] = false;
+                    if (matrix2[y][x] > 0)
+                    {
+                        matrix2[y][x] += -1;
+                    }
                     break;
                 default:
                     break;
@@ -87,20 +94,28 @@ int main()
         }
     }
 
-    int count_lights = 0;
+    int count_lights1 = 0;
+    int count_lights2 = 0;
     for (int y = 0; y < SIZE_Y; y++)
     {
         for (int x = 0; x < SIZE_X; x++)
         {
-            if (matrix[y][x])
+            if (matrix1[y][x])
             {
-                count_lights++;
+                count_lights1++;
             }
+
+            count_lights2 += matrix2[y][x];
         }
     }
 
     cout << "Part 1:" << endl
-         << count_lights << endl;
+         << count_lights1 << endl;
+
+    cout << "Part 2:" << endl
+         << count_lights2 << endl;
+
+    file.close();
 
     return 0;
 }
