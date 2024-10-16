@@ -17,6 +17,7 @@ int main()
     }
 
     unsigned int paper = 0;
+    unsigned int ribbon = 0;
     int box_dim[3];
 
     string line;
@@ -37,10 +38,16 @@ int main()
         sort(box_dim, box_dim + 3);
 
         paper += box_dim[0] * box_dim[1];
+
+        ribbon += 2 * box_dim[0] + 2 * box_dim[1];
+        ribbon += box_dim[0] * box_dim[1] * box_dim[2];
     }
 
     cout << "Part 1:" << endl
          << paper << endl;
+
+    cout << "Part 2:" << endl
+         << ribbon << endl;
 
     file.close();
 
