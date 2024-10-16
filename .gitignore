@@ -1,6 +1,7 @@
 # Folder
 inputs/
 build/
+.vscode/
 
 # Prerequisites
 *.d
