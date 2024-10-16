@@ -72,6 +72,9 @@ int main()
     std::vector<int> best_route;
     int lowest_cost = INT_MAX;
 
+    std::vector<int> worst_route;
+    int highest_cost = 0;
+
     int sum = 0;
     do
     {
@@ -84,6 +87,12 @@ int main()
             lowest_cost = sum;
             best_route = range;
         }
+        if (sum > highest_cost)
+        {
+            highest_cost = sum;
+            worst_route = range;
+        }
+
         sum = 0;
     } while (std::next_permutation(range.begin(), range.end()));
 
@@ -91,6 +100,22 @@ int main()
               << lowest_cost << std::endl
               << "best route: " << std::endl;
     for (auto c : best_route)
+    {
+        std::cout << c << ": ";
+        for (const auto &pair : city_id)
+        {
+            if (pair.second == c)
+            {
+                std::cout << pair.first << std::endl;
+                break;
+            }
+        }
+    }
+
+    std::cout << "Part 2:" << std::endl
+              << highest_cost << std::endl
+              << "worst route: " << std::endl;
+    for (auto c : worst_route)
     {
         std::cout << c << ": ";
         for (const auto &pair : city_id)
