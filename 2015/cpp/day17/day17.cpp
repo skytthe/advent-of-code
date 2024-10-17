@@ -43,6 +43,7 @@ int main()
 
     const int goal = 150;
     int useful_combinations = 0;
+    vector<int> useful_combinations_sizes;
     int sum = 0;
     for (auto set : pset)
     {
@@ -53,12 +54,19 @@ int main()
         if (sum == goal)
         {
             useful_combinations++;
+            useful_combinations_sizes.push_back(set.size());
         }
         sum = 0;
     }
 
+    sort(useful_combinations_sizes.begin(), useful_combinations_sizes.end());
+    int different_ways = count(useful_combinations_sizes.begin(), useful_combinations_sizes.end(), useful_combinations_sizes[0]);
+
     cout << "Part 1:" << endl
          << useful_combinations << endl;
+
+    cout << "Part 2:" << endl
+         << different_ways << endl;
 
     return 0;
 }
