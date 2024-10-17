@@ -25,13 +25,10 @@ int main()
         containers.push_back(stoi(line));
     }
 
-    vector<int> idx_list(containers.size());
-    iota(idx_list.begin(), idx_list.end(), 0);
-
     vector<vector<int>> pset;
     pset.push_back(vector<int>());
 
-    for (auto e : idx_list)
+    for (auto e : containers)
     {
         vector<vector<int>> new_subsets;
         for (auto set : pset)
@@ -51,7 +48,7 @@ int main()
     {
         for (auto e : set)
         {
-            sum += containers[e];
+            sum += e;
         }
         if (sum == goal)
         {
