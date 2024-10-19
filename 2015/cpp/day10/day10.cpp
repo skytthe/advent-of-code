@@ -31,20 +31,30 @@ int main()
     // std::string input = "1";
     std::string input = "3113322113";
     // int steps = 5;
-    int steps = 40;
+    int steps1 = 40;
+    int steps2 = 50;
 
-    std::string result = input;
+    std::string result1 = input;
+    std::string result2 = input;
 
-    for (int i = 0; i < steps; i++)
+    for (int i = 0; i < steps2; i++)
     {
-        result = look_and_say(result);
+        result2 = look_and_say(result2);
+        if (i == steps1 - 1)
+        {
+            result1 = result2;
+        }
+
         // std::cout << "step: " << i << std::endl
         //           << "\t" << result << std::endl
         //           << "\tlen(" << result.size() << ")" << std::endl;
     }
 
     std::cout << "Part 1:" << std::endl
-              << result.size() << std::endl;
+              << result1.size() << std::endl;
+
+    std::cout << "Part 2:" << std::endl
+              << result2.size() << std::endl;
 
     return 0;
 }
