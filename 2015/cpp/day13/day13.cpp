@@ -48,10 +48,30 @@ int main()
             id_map[name2] = id_map.size();
         }
 
-        cost_matrix[id_map[name1]][id_map[name2]];
+        cost_matrix[id_map[name1]][id_map[name2]] = happiness;
     }
 
-    // TODO: circular permutations
+    // circular permutations
+    int n = id_map.size();
+    vector<int> range(n);
+    iota(range.begin(), range.end(), 0);
+    vector<int> result(id_map.size());
+
+    int max_happiness = INT_MIN;
+    int sum = 0;
+    do
+    {
+        for (int i = 0; i < n; i++)
+        {
+            sum += cost_matrix[range[i]][range[(i - 1 + n) % n]];
+            sum += cost_matrix[range[i]][range[(i + 1) % n]];
+        }
+        max_happiness = max(sum, max_happiness);
+        sum = 0;
+    } while (next_permutation(range.begin() + 1, range.end()));
+
+    cout << "Part 1:" << endl
+         << max_happiness << endl;
 
     return 0;
 }
