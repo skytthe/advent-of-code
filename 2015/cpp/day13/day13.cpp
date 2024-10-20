@@ -20,7 +20,7 @@ int main()
     }
 
     unordered_map<string, int> id_map;
-    int cost_matrix[8][8];
+    int cost_matrix[9][9] = {0};
 
     string line;
     while (getline(file, line))
@@ -53,9 +53,8 @@ int main()
 
     // circular permutations
     int n = id_map.size();
-    vector<int> range(n);
-    iota(range.begin(), range.end(), 0);
-    vector<int> result(id_map.size());
+    vector<int> range1(n);
+    iota(range1.begin(), range1.end(), 0);
 
     int max_happiness = INT_MIN;
     int sum = 0;
@@ -63,14 +62,35 @@ int main()
     {
         for (int i = 0; i < n; i++)
         {
-            sum += cost_matrix[range[i]][range[(i - 1 + n) % n]];
-            sum += cost_matrix[range[i]][range[(i + 1) % n]];
+            sum += cost_matrix[range1[i]][range1[(i - 1 + n) % n]];
+            sum += cost_matrix[range1[i]][range1[(i + 1) % n]];
         }
         max_happiness = max(sum, max_happiness);
         sum = 0;
-    } while (next_permutation(range.begin() + 1, range.end()));
+    } while (next_permutation(range1.begin() + 1, range1.end()));
 
     cout << "Part 1:" << endl
+         << max_happiness << endl;
+
+    // part 2
+    n = id_map.size() + 1;
+    vector<int> range2(n);
+    iota(range2.begin(), range2.end(), 0);
+
+    max_happiness = INT_MIN;
+    sum = 0;
+    do
+    {
+        for (int i = 0; i < n; i++)
+        {
+            sum += cost_matrix[range2[i]][range2[(i - 1 + n) % n]];
+            sum += cost_matrix[range2[i]][range2[(i + 1) % n]];
+        }
+        max_happiness = max(sum, max_happiness);
+        sum = 0;
+    } while (next_permutation(range2.begin() + 1, range2.end()));
+
+    cout << "Part 2:" << endl
          << max_happiness << endl;
 
     return 0;
