@@ -34,6 +34,17 @@ bool testPassword(std::string p){
 	return (bool)(alphabetSequence && !iol && (letterPair >= 2));
 }
 
+void nextPassword(std::string &password){
+		char carry = 1;
+		for (int i = password.size()-1; (i >= 0 && carry == 1); i--)
+		{
+			char c = password.at(i);
+			c = (c - 'a' + carry)%26 + 'a';
+			carry = (c == 'a');
+			password[i] = c;
+		}
+}
+
 
 int main() {
 	// std::ifstream file("2015/inputs/day11.txt");
@@ -51,18 +62,21 @@ int main() {
 
 	while (!testPassword(newPassword))
 	{
-		char carry = 1;
-		for (int i = newPassword.size()-1; (i >= 0 && carry == 1); i--)
-		{
-			char c = newPassword.at(i);
-			c = (c - 'a' + carry)%26 + 'a';
-			carry = (c == 'a');
-			newPassword[i] = c;
-		}
+		nextPassword(newPassword);
 	}
 
     std::cout << "Part 1:" << std::endl
               << newPassword << std::endl;
+
+	nextPassword(newPassword);
+
+	while (!testPassword(newPassword))
+	{
+		nextPassword(newPassword);
+	}
+
+    std::cout << "Part 2:" << std::endl
+              << newPassword << std::endl;			  
 
 	return 0;
 }
