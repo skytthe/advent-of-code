@@ -13,9 +13,24 @@
 
 using namespace std;
 
+double averageStringLength(const vector<string>& strings) {
+    if (strings.empty()) {
+        return 0.0;  
+    }
+
+    int sum = 0;
+    for (const auto &s :strings)
+    {
+        sum += s.size();
+    }
+    
+    return static_cast<double>(sum) / strings.size();
+}
+
+
 int main()
 {
-    ifstream file("2015/inputs/day19_s.txt");
+    ifstream file("2015/inputs/day19.txt");
     if (!file.is_open())
     {
         cerr << "Error: Could not open the file." << endl;
@@ -23,6 +38,7 @@ int main()
     }
 
     map<string, vector<string>> reaction_map;
+    vector<std::pair<string,string>> reverse_reactions;
 
     string line;
     while (getline(file, line))
@@ -44,12 +60,13 @@ int main()
             reaction_map[list[0]] = {};
         }
         reaction_map[list[0]].push_back(list[2]);
+        reverse_reactions.push_back({list[2],list[0]});
     }
     getline(file, line);
 
     string molecule = line;
 
-        set<string> new_molecules;
+    set<string> new_molecules;
     string key;
     string left, right, tmp;
     for (int i = 0; i < molecule.size(); i++)
@@ -80,6 +97,7 @@ int main()
 
 
     // Part 2
+    /*
     string medicine = molecule;
     molecule = "e";
 
@@ -124,11 +142,62 @@ int main()
         new_molecules.clear();
 
     }
-    
+*/
+    vector<string> molecules;
+    molecules.push_back(molecule);
+    new_molecules.clear();
+
+    int steps = 0;
+    bool found = false;
+    while (true)       
+    {
+        steps++;
+        // cout << "steps: " << steps << endl;
+        for (const auto &m : molecules)
+        {
+            for (const auto &r : reverse_reactions)
+            {
+                size_t pos = m.find(r.first);
+                while (pos != string::npos)
+                {
+                    tmp = m.substr(0,pos) + r.second + m.substr(pos+r.first.size());
+                
+                    if (r.second != "e" )
+                    {
+                        new_molecules.insert(tmp);
+                    }                    
+                    if(tmp == "e")
+                    {
+                        found = true;
+                        break;
+                    }
+                    pos = m.find(r.first, pos+1);
+                }
+                
+            }
+        }
+        if(found || steps == 210) {
+            break;
+        }
+
+        molecules = vector<string>(new_molecules.begin(), new_molecules.end());
+        sort(molecules.begin(), molecules.end(), [](const string& first, const string& second){return first.size() < second.size();});
+        #define MOLECULES_TO_KEEP 1
+        // #define MOLECULES_TO_KEEP 10    // Do not work!
+        // #define MOLECULES_TO_KEEP 100
+        if (molecules.size() >= MOLECULES_TO_KEEP)
+        {
+            molecules.resize(MOLECULES_TO_KEEP);
+        }
+        new_molecules.clear();
+
+        // cout << "molecules size: " << molecules.size() << endl;
+        // cout << "molecules avg len: " << averageStringLength(molecules) << endl << endl;
+    }
+
     std::cout << "Part 2:" << std::endl
               << steps << std::endl;
 
     file.close();
-
     return 0;
 }
