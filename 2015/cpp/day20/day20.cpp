@@ -59,5 +59,46 @@ int main()
     std::cout << "Part 1:" << std::endl
               << house << std::endl;
 
+    // part 2
+    presents = 0;
+    house = 0;
+
+    vector<int> visits(1000, 0);
+    while (presents <= goal)
+    {
+        house++;
+        presents = 0;
+        if (house >= visits.size())
+        {
+            visits.resize(10 * visits.size(), 0);
+        }
+
+        set<int> divisors;
+        for (int i = 1; i < sqrt(house); i++)
+        {
+            if (house % i == 0)
+            {
+                if (visits[i] < 50)
+                {
+                    visits[i]++;
+                    divisors.insert(i);
+                }
+                if (visits[house / i] < 50)
+                {
+                    visits[house / i]++;
+                    divisors.insert(house / i);
+                }
+            }
+        }
+
+        for (const auto &e : divisors)
+        {
+            presents += e * 11;
+        }
+    }
+
+    std::cout << "Part 2:" << std::endl
+              << house << std::endl;
+
     return 0;
 }
