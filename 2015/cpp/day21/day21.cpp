@@ -107,7 +107,6 @@ int main()
     // cout << playGame(you, Boss, true) << endl;
 
     item weapons[] = {
-        {"None", 0, 0, 0},
         {"Dagger", 8, 4, 0},
         {"Shortsword", 10, 5, 0},
         {"Warhammer", 25, 6, 0},
@@ -141,6 +140,7 @@ int main()
 
     int steps = 0;
     int min_cost = INT_MAX;
+    int max_cost = 0;
     for (const auto &w : weapons)
     {
         for (const auto &a : armors)
@@ -149,14 +149,22 @@ int main()
             {
                 for (const auto &r2 : rings)
                 {
-                    steps++;
-                    int damage = w.damage + r1.damage + r2.damage;
-                    int armor = a.armor + r1.armor + r2.armor;
-                    int cost = w.price + a.price + r1.price + r2.price;
-                    player p1 = {"player", player_hitpoints, damage, armor};
-                    if (playGame(p1, boss, false) && min_cost > cost)
+                    if (&r1 != &r2)
                     {
-                        min_cost = cost;
+                        steps++;
+                        int damage = w.damage + r1.damage + r2.damage;
+                        int armor = a.armor + r1.armor + r2.armor;
+                        int cost = w.price + a.price + r1.price + r2.price;
+                        player p1 = {"player", player_hitpoints, damage, armor};
+                        bool game_result = playGame(p1, boss, false);
+                        if (game_result && min_cost > cost)
+                        {
+                            min_cost = cost;
+                        }
+                        if (!game_result && max_cost < cost)
+                        {
+                            max_cost = cost;
+                        }
                     }
                 }
             }
@@ -165,6 +173,9 @@ int main()
 
     std::cout << "Part 1:" << std::endl
               << min_cost << std::endl;
+
+    std::cout << "Part 2:" << std::endl
+              << max_cost << std::endl;
 
     return 0;
 }
