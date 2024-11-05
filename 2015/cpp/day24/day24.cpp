@@ -32,16 +32,19 @@ int main()
     }
 
     int sum = accumulate(packages.begin(), packages.end(), 0);
-    int group_weight = sum / 3;
+    int group_weight1 = sum / 3;
+    int group_weight2 = sum / 4;
 
     // cout << "sum: " << sum << endl;
     // cout << "group_weight: " << group_weight << endl;
 
     vector<vector<int>> pset;
     pset.push_back(vector<int>());
-    vector<vector<int>> goalset;
+    vector<vector<int>> goalset1;
+    vector<vector<int>> goalset2;
 
-    int goalset_lenght = packages.size();
+    int goalset_lenght1 = packages.size();
+    int goalset_lenght2 = packages.size();
     for (auto e : packages)
     {
         vector<vector<int>> new_subset;
@@ -51,35 +54,60 @@ int main()
             tmp = set;
             tmp.push_back(e);
             int a = accumulate(tmp.begin(), tmp.end(), 0);
-            if (a <= group_weight && tmp.size() < goalset_lenght)
+            if (a <= group_weight2 && tmp.size() < goalset_lenght2)
             {
                 new_subset.push_back(tmp);
             }
-            if (a == group_weight && tmp.size() <= goalset_lenght)
+            else if (a <= group_weight1 && tmp.size() < goalset_lenght1)
             {
-                if (tmp.size() < goalset_lenght)
+                new_subset.push_back(tmp);
+            }
+
+            if (a == group_weight1 && tmp.size() <= goalset_lenght1)
+            {
+                if (tmp.size() < goalset_lenght1)
                 {
-                    goalset_lenght = tmp.size();
-                    goalset.clear();
+                    goalset_lenght1 = tmp.size();
+                    goalset1.clear();
                 }
-                goalset.push_back(tmp);
+                goalset1.push_back(tmp);
+            }
+            if (a == group_weight2 && tmp.size() <= goalset_lenght2)
+            {
+                if (tmp.size() < goalset_lenght2)
+                {
+                    goalset_lenght2 = tmp.size();
+                    goalset2.clear();
+                }
+                goalset2.push_back(tmp);
             }
         }
         pset.insert(pset.end(), new_subset.begin(), new_subset.end());
     }
 
-    long long min_quantum_entanglement = LONG_MAX;
-    for (auto set : goalset)
+    long long min_quantum_entanglement1 = LONG_MAX;
+    for (auto set : goalset1)
     {
         long long tmp = accumulate(set.begin(), set.end(), 1LL, multiplies<long long>());
-        if (tmp < min_quantum_entanglement)
+        if (tmp < min_quantum_entanglement1)
         {
-            min_quantum_entanglement = tmp;
+            min_quantum_entanglement1 = tmp;
         }
     }
-
     cout << "Part 1:" << endl
-         << min_quantum_entanglement << endl;
+         << min_quantum_entanglement1 << endl;
+
+    long long min_quantum_entanglement2 = LONG_MAX;
+    for (auto set : goalset2)
+    {
+        long long tmp = accumulate(set.begin(), set.end(), 1LL, multiplies<long long>());
+        if (tmp < min_quantum_entanglement2)
+        {
+            min_quantum_entanglement2 = tmp;
+        }
+    }
+    cout << "Part 2:" << endl
+         << min_quantum_entanglement2 << endl;
 
     return 0;
 }
