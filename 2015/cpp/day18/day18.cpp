@@ -43,18 +43,31 @@ int main()
     }
 
     // false off, true on
-    bool **matrix = new bool*[SIZE_Y];
-    bool **next_matrix = new bool*[SIZE_Y];
+    bool **matrix1 = new bool*[SIZE_Y];
+    bool **next_matrix1 = new bool*[SIZE_Y];
     for (int i = 0; i < SIZE_Y; i++)
     {
-        matrix[i] = new bool[SIZE_X];
-        fill(matrix[i], matrix[i] + SIZE_X, false);
+        matrix1[i] = new bool[SIZE_X];
+        fill(matrix1[i], matrix1[i] + SIZE_X, false);
 
-        next_matrix[i] = new bool[SIZE_X];
-        fill(next_matrix[i], next_matrix[i] + SIZE_X, false);
+        next_matrix1[i] = new bool[SIZE_X];
+        fill(next_matrix1[i], next_matrix1[i] + SIZE_X, false);
 
     }
-    
+
+    bool **matrix2 = new bool*[SIZE_Y];
+    bool **next_matrix2 = new bool*[SIZE_Y];
+    for (int i = 0; i < SIZE_Y; i++)
+    {
+        matrix2[i] = new bool[SIZE_X];
+        fill(matrix2[i], matrix2[i] + SIZE_X, false);
+
+        next_matrix2[i] = new bool[SIZE_X];
+        fill(next_matrix2[i], next_matrix2[i] + SIZE_X, false);
+
+    }
+
+
     string line;
     char ch;
     int y = 0;
@@ -64,12 +77,20 @@ int main()
         {
             if (line.at(x) == '#')
             {
-                matrix[y][x] = true;
+                matrix1[y][x] = true;
+                matrix2[y][x] = true;
             }
         }
         y++;
     }
-    
+
+
+    const int corners[4][2] = {{0,0},{SIZE_Y-1,0},{0,SIZE_X-1},{SIZE_Y-1,SIZE_X-1}};
+    for(auto c : corners) 
+    {
+        matrix2[c[0]][c[1]] = true;
+    }
+
 
     const int EightNeighbors[8][2] = {
         {-1, -1}, {-1, 0}, {-1, 1},
@@ -83,26 +104,40 @@ int main()
         {
             for (int x = 0; x < SIZE_X; x++)
             {
-                next_matrix[y][x] = false;
-                int neighbors = 0;
+                next_matrix1[y][x] = false;
+                next_matrix2[y][x] = false;
+                int neighbors1 = 0;
+                int neighbors2 = 0;
                 for (size_t i = 0; i < 8; i++)
                 {
                     int tmpY = y + EightNeighbors[i][0];
                     int tmpX = x + EightNeighbors[i][1];
                     if (tmpY >= 0 && tmpY < SIZE_Y && tmpX >= 0 && tmpX < SIZE_X)
                     {
-                        if(matrix[tmpY][tmpX]){
-                            neighbors++;
+                        if(matrix1[tmpY][tmpX]){
+                            neighbors1++;
+                        } 
+                        if(matrix2[tmpY][tmpX]){
+                            neighbors2++;
                         } 
                     }            
                 }
-                if (matrix[y][x])
+                if (matrix1[y][x])
                 {
-                    next_matrix[y][x] = (neighbors == 2 || neighbors == 3);
+                    next_matrix1[y][x] = (neighbors1 == 2 || neighbors1 == 3);
                 }
                 else
                 {           
-                    next_matrix[y][x] = (neighbors == 3);
+                    next_matrix1[y][x] = (neighbors1 == 3);
+                }
+                //part 2
+                if (matrix2[y][x])
+                {
+                    next_matrix2[y][x] = (neighbors2 == 2 || neighbors2 == 3);
+                }
+                else
+                {           
+                    next_matrix2[y][x] = (neighbors2 == 3);
                 }
 
             }    
@@ -111,36 +146,48 @@ int main()
         {
             for (int x = 0; x < SIZE_X; x++)
             {
-                matrix[y][x] = next_matrix[y][x];
+                matrix1[y][x] = next_matrix1[y][x];
+                matrix2[y][x] = next_matrix2[y][x];
             }        
         }
+        matrix2[0][0] = true;
+        matrix2[0][SIZE_X - 1] = true;
+        matrix2[SIZE_Y - 1][0] = true;
+        matrix2[SIZE_Y - 1][SIZE_X - 1] = true;
         // cout << "After " << steps << " steps:" << endl;
         // dispay(SIZE_Y, SIZE_X, matrix);
     }
     
-    int count_lights = 0;
+    int count_lights1 = 0;
+    int count_lights2 = 0;
     for (int y = 0; y < SIZE_Y; y++)
     {
         for (int x = 0; x < SIZE_X; x++)
         {
-            if(matrix[y][x]){
-                count_lights++;
+            if(matrix1[y][x]){
+                count_lights1++;
+            } 
+            if(matrix2[y][x]){
+                count_lights2++;
             } 
             
         }        
     }
 
     cout << "Part 1:" << endl
-         << count_lights << endl;
+         << count_lights1 << endl;
+
+    cout << "Part 2:" << endl
+         << count_lights2 << endl;
 
 
     for (int i = 0; i < SIZE_Y; i++)
     {
-        delete[] matrix[i];
-        delete[] next_matrix[i];
+        delete[] matrix1[i];
+        delete[] next_matrix1[i];
     }
-    delete[] matrix;
-    delete[] next_matrix;
+    delete[] matrix1;
+    delete[] next_matrix1;
 
     return 0;
 }
