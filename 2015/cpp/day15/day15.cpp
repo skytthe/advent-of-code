@@ -53,7 +53,9 @@ void nestedLoop(vector<ingredient> ingredients, int max, vector<int> &indices, i
                 texture += indices[i] * ingredients[i].texture;
                 calories += indices[i] * ingredients[i].calories;
             }
-            long tmp = (capacity < 0 || durability < 0 || flavor < 0 || texture < 0) ? 0 : capacity * durability * flavor * texture;
+            long tmp = (capacity < 0 || durability < 0 || flavor < 0 || texture < 0)
+                           ? 0
+                           : capacity * durability * flavor * texture;
 
             if (tmp > best1)
             {
