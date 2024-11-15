@@ -33,7 +33,7 @@ void printIngredients(const vector<ingredient> &ingredients)
     }
 }
 
-void nestedLoop(vector<ingredient> ingredients, int max, vector<int> &indices, int idx, long &best)
+void nestedLoop(vector<ingredient> ingredients, int max, vector<int> &indices, int idx, long &best1, long &best2)
 {
     if (idx == ingredients.size())
     {
@@ -44,18 +44,24 @@ void nestedLoop(vector<ingredient> ingredients, int max, vector<int> &indices, i
             long durability = 0;
             long flavor = 0;
             long texture = 0;
+            long calories = 0;
             for (int i = 0; i < ingredients.size(); i++)
             {
                 capacity += indices[i] * ingredients[i].capacity;
                 durability += indices[i] * ingredients[i].durability;
                 flavor += indices[i] * ingredients[i].flavor;
                 texture += indices[i] * ingredients[i].texture;
+                calories += indices[i] * ingredients[i].calories;
             }
             long tmp = (capacity < 0 || durability < 0 || flavor < 0 || texture < 0) ? 0 : capacity * durability * flavor * texture;
 
-            if (tmp > best)
+            if (tmp > best1)
             {
-                best = tmp;
+                best1 = tmp;
+            }
+            if (calories == 500 & tmp > best2)
+            {
+                best2 = tmp;
             }
         }
         return;
@@ -65,7 +71,7 @@ void nestedLoop(vector<ingredient> ingredients, int max, vector<int> &indices, i
         for (int i = 0; i < max; i++)
         {
             indices[idx] = i;
-            nestedLoop(ingredients, max, indices, idx + 1, best);
+            nestedLoop(ingredients, max, indices, idx + 1, best1, best2);
         }
     }
 }
@@ -100,12 +106,16 @@ int main()
     // printIngredients(ingredients);
 
 #define TEASPOONS 100
-    long best = 0;
+    long best1 = 0;
+    long best2 = 0;
     vector<int> indices(ingredients.size());
-    nestedLoop(ingredients, TEASPOONS, indices, 0, best);
+    nestedLoop(ingredients, TEASPOONS, indices, 0, best1, best2);
 
     std::cout << "Part 1:" << std::endl
-              << best << std::endl;
+              << best1 << std::endl;
+
+    std::cout << "Part 2:" << std::endl
+              << best2 << std::endl;
 
     return 0;
 }
