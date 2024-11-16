@@ -44,7 +44,8 @@ int main()
                                    {"trees", 3},
                                    {"cars", 2},
                                    {"perfumes", 1}};
-    int sueNumber = 0;
+    int sueNumber1 = 0;
+    int sueNumber2 = 0;
 
     string line;
     while (getline(file, line))
@@ -69,26 +70,67 @@ int main()
         //     cout << "\t" << e.first << " " << e.second << endl;
         // }
 
-        bool sueFlag = true;
+        bool sueFlag1 = true;
         for (auto e : compounds)
         {
             auto idx = suesCompounds.find(e.first);
-            if (idx == suesCompounds.end() || idx->second != e.second)
+            if (idx->second != e.second)
             {
-                sueFlag = false;
+                sueFlag1 = false;
                 break;
             }
         }
 
-        if (sueFlag)
+        bool sueFlag2 = true;
+        for (auto e : compounds)
         {
-            sueNumber = stoi(list[1]);
+            auto idx = suesCompounds.find(e.first);
+
+            if (e.first == "cats" || e.first == "trees")
+            {
+                if (idx->second >= e.second)
+                {
+                    sueFlag2 = false;
+                    break;
+                }
+            }
+            else if (e.first == "pomeranians" || e.first == "goldfish")
+            {
+                if (idx->second <= e.second)
+                {
+                    sueFlag2 = false;
+                    break;
+                }
+            }
+            else
+            {
+                if (idx->second != e.second)
+                {
+                    sueFlag2 = false;
+                    break;
+                }
+            }
+        }
+
+        if (sueFlag1)
+        {
+            sueNumber1 = stoi(list[1]);
+        }
+        if (sueFlag2)
+        {
+            sueNumber2 = stoi(list[1]);
+        }
+        if (sueFlag1 && sueFlag2)
+        {
             break;
         }
     }
 
     std::cout << "Part 1:" << std::endl
-              << sueNumber << std::endl;
+              << sueNumber1 << std::endl;
+
+    std::cout << "Part 2:" << std::endl
+              << sueNumber2 << std::endl;
 
     return 0;
 }
