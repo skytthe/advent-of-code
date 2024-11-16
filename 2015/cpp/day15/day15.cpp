@@ -100,9 +100,8 @@ int main()
         {
             list.push_back(tmp);
         }
-        ingredient ingr = {list[0], stoi(list[2]), stoi(list[4]),
-                           stoi(list[6]), stoi(list[8]), stoi(list[10])};
-        ingredients.push_back(ingr);
+        ingredients.push_back({list[0], stoi(list[2]), stoi(list[4]),
+                               stoi(list[6]), stoi(list[8]), stoi(list[10])});
     }
 
     // printIngredients(ingredients);
