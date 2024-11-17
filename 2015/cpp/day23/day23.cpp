@@ -63,6 +63,53 @@ struct instruction
     int offset;
 };
 
+void runProgram(vector<instruction> &program, unsigned int &programCounter)
+{
+    while (programCounter < program.size())
+    {
+        switch (program[programCounter].instr)
+        {
+        case hlf:
+            (*program[programCounter].reg) /= 2;
+            programCounter++;
+            break;
+        case tpl:
+            (*program[programCounter].reg) *= 3;
+            programCounter++;
+            break;
+        case inc:
+            (*program[programCounter].reg)++;
+            programCounter++;
+            break;
+        case jmp:
+            programCounter += program[programCounter].offset;
+            break;
+        case jie:
+            if ((*program[programCounter].reg) % 2 == 0)
+            {
+                programCounter += program[programCounter].offset;
+            }
+            else
+            {
+                programCounter++;
+            }
+            break;
+        case jio:
+            if ((*program[programCounter].reg) == 1)
+            {
+                programCounter += program[programCounter].offset;
+            }
+            else
+            {
+                programCounter++;
+            }
+            break;
+        default:
+            break;
+        }
+    }
+}
+
 int main()
 {
     ifstream file("2015/inputs/day23.txt");
@@ -134,64 +181,17 @@ int main()
     //          << "\t" << program[i].offset << endl;
     // }
 
-    int step = 0;
-    while (programCounter < program.size())
-    {
-        // step++;
-        // cout << "step> " << step << endl;
-        // cout << "  programCounter " << programCounter << endl;
-        // cout << "  a " << a << endl;
-        // cout << "  b " << b << endl;
-        // cout << "  " << getInstructionString(program[programCounter].instr) << endl;
-        switch (program[programCounter].instr)
-        {
-        case hlf:
-            (*program[programCounter].reg) = (*program[programCounter].reg) / 2;
-            programCounter++;
-            break;
-        case tpl:
-            (*program[programCounter].reg) = (*program[programCounter].reg) * 3;
-            programCounter++;
-            break;
-        case inc:
-            (*program[programCounter].reg)++;
-            programCounter++;
-            break;
-        case jmp:
-            programCounter += program[programCounter].offset;
-            break;
-        case jie:
-            if ((*program[programCounter].reg) % 2 == 0)
-            {
-                programCounter += program[programCounter].offset;
-            }
-            else
-            {
-                programCounter++;
-            }
-            break;
-        case jio:
-            if ((*program[programCounter].reg) == 1)
-            {
-                programCounter += program[programCounter].offset;
-            }
-            else
-            {
-                programCounter++;
-            }
-            break;
-        default:
-            break;
-        }
-    }
-    // cout << endl
-    //      << "DONE:" << endl;
-    // cout << "step> " << step << endl;
-    // cout << "  programCounter " << programCounter << endl;
-    // cout << "  a " << a << endl;
-    // cout << "  b " << b << endl;
+    runProgram(program, programCounter);
 
     std::cout << "Part 1:" << std::endl
+              << b << std::endl;
+
+    programCounter = 0;
+    a = 1;
+    b = 0;
+    runProgram(program, programCounter);
+
+    std::cout << "Part 2:" << std::endl
               << b << std::endl;
 
     file.close();
