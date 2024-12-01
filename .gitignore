@@ -3,6 +3,8 @@ inputs/
 build/
 .vscode/
 
+*.txt
+
 *.DS_Store
 
 # Prerequisites
