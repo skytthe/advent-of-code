@@ -5,8 +5,7 @@ example = """7 6 4 2 1
 9 7 6 2 1
 1 3 2 4 5
 8 6 4 4 1
-1 3 6 7 9
-""".split("\n")
+1 3 6 7 9""".split("\n")
 
 with open('2024/py/day02/day02.txt') as f:
     lines = [line.strip() for line in f.readlines()]
@@ -37,5 +36,33 @@ for d in data:
         ans1 = ans1 + 1
 
 print(ans1)
-        
+
+
+def test(l):
+    increasing = True
+    decreasing = True
+    differ = True
+    for i in range(len(l)-1):
+        if l[i] < l[i+1]:
+            decreasing = False
+        elif l[i] > l[i+1]:
+            increasing = False
+        else:
+            decreasing = False
+            increasing = False
+        if abs(l[i] - l[i+1]) > 3 or abs(l[i] - l[i+1]) < 1:
+            differ = False
+    
+    return (increasing or decreasing) and differ
+
+
+ans2 = 0
+for d in data:
+    l = d.split()
+    l = [int(x) for x in l]
+
+    if test(l) or any(test(l[:i] + l[i+1:]) for i in range(len(l))):
+        ans2 += 1
+
+print(ans2)
         
