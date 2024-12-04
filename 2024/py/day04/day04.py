@@ -30,7 +30,12 @@ m.append(p)
 
 
 comp = "MAS"
+comp21 = "MSMS"
+comp22 = "SSMM"
+comp23 = "SMSM"
+comp24 = "MMSS"
 ans1 = 0
+ans2 = 0
 for y, r in enumerate(m):
     for x, c in enumerate(r):
         if c == 'X':
@@ -49,5 +54,12 @@ for y, r in enumerate(m):
 
             ans1 += tmp.count(comp)
 
+        if c == 'A':
+            tmp = [m[y-1][x-1]+m[y-1][x+1] + m[y+1][x-1]+m[y+1][x+1]]
+            ans2 += tmp.count(comp21)
+            ans2 += tmp.count(comp22)
+            ans2 += tmp.count(comp23)
+            ans2 += tmp.count(comp24)
 
 print(ans1)
+print(ans2)
