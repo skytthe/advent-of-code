@@ -1,5 +1,6 @@
 import sys
 from collections import defaultdict
+from functools import cmp_to_key
 
 example = """47|53
 97|13
@@ -41,6 +42,7 @@ ans2 = 0
 
 pairs = defaultdict(list)
 ll = []
+ee = []
 
 for l in data:
     if l.count('|') > 0:
@@ -59,8 +61,30 @@ for l in data:
 
         if flag:
             ll.append(tmp)
+        else:
+            ee.append(tmp)
+
+
+def newcompare(a, b):
+    if b in pairs[a]:
+        return -1
+    elif a in pairs[b]:
+        return 1
+    else:
+        return 0
+
+
+sorted_ee = []
+for e in ee:
+    sorted_ee.append(sorted(e, key=cmp_to_key(newcompare)))
+    print(e)
+
 
 for a in (int(l[int(len(l)/2)]) for l in ll):
     ans1 += a
 
+for a in (int(l[int(len(l)/2)]) for l in sorted_ee):
+    ans2 += a
+
 print(ans1)
+print(ans2)
