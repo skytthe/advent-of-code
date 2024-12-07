@@ -17,6 +17,7 @@ data = example
 data = lines
 
 ans1 = 0
+ans2 = 0
 
 
 def calc(goal, input):
@@ -31,6 +32,20 @@ def calc(goal, input):
         return calc(goal, tmpAdd) or calc(goal, tmpMul)
 
 
+def calc2(goal, input):
+    if len(input) == 1:
+        return (goal == input[0])
+    else:
+        i = input[0]
+        tmpAdd = input[1:]
+        tmpAdd[0] = tmpAdd[0] + i
+        tmpMul = input[1:]
+        tmpMul[0] = tmpMul[0] * i
+        tmpConc = input[1:]
+        tmpConc[0] = int(str(i) + str(tmpConc[0]))
+        return calc2(goal, tmpAdd) or calc2(goal, tmpMul) or calc2(goal, tmpConc)
+
+
 for l in data:
     goal, input = l.split(':')
     goal = int(goal)
@@ -38,6 +53,9 @@ for l in data:
     input = [int(x) for x in input]
     if calc(goal, input):
         ans1 += goal
+    if calc2(goal, input):
+        ans2 += goal
 
 
 print(ans1)
+print(ans2)
