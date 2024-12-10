@@ -28,9 +28,7 @@ grid.append(p)
 
 def walk(x, y, h):
     if h == '9':
-        s = set()
-        s.add((x, y))
-        return s
+        return {(x, y)}
     else:
         res = set()
         if grid[y+1][x] == str(int(h)+1):
