@@ -21,8 +21,15 @@ for a, b in combinations(data, 2):
         ans11 = a * b
         break
 
-ans12 = next((a * b for a, b in combinations(data, 2) if a + b == 2020))
+ans12 = next(a * b for a, b in combinations(data, 2) if a + b == 2020)
 
 assert ans11 == ans12
 
 print(ans11)
+
+# part 2
+
+ans2 = next(a * b * c for a, b, c in combinations(data, 3)
+            if a + b + c == 2020)
+
+print(ans2)
