@@ -21,7 +21,7 @@ for a, b in combinations(data, 2):
         ans11 = a * b
         break
 
-ans12 = next((a * b for a, b in combinations(data, 2) if a + b == 2020), -1)
+ans12 = next((a * b for a, b in combinations(data, 2) if a + b == 2020))
 
 assert ans11 == ans12
 
