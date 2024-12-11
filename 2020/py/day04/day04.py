@@ -36,9 +36,13 @@ keywords = {
     "pid",
 }
 
-ans1 = 0
+ans11 = 0
 for p in passports:
     if keywords == set(p.keys()):
-        ans1 += 1
+        ans11 += 1
 
-print(ans1)
+ans12 = sum(keywords == set(p.keys()) for p in passports)
+
+assert ans11 == ans12
+
+print(ans11)
