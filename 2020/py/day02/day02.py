@@ -11,6 +11,7 @@ data = example
 data = lines
 
 ans1 = 0
+ans2 = 0
 for l in data:
     tmp = l.split(" ")
     a, b, c, p = (*map(int, re.findall(r'\d+', tmp[0])),
@@ -19,4 +20,8 @@ for l in data:
     if a <= p.count(c) <= b:
         ans1 += 1
 
+    if (p[a-1] == c) ^ (p[b-1] == c):
+        ans2 += 1
+
 print(ans1)
+print(ans2)
