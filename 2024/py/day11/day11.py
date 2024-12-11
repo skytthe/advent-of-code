@@ -31,8 +31,11 @@ def blink(count):
 
 
 count = Counter(data)
-for i in range(25):
+ans1 = 0
+for i in range(75):
+    if i == 25:
+        ans1 = sum(count.values())
     count = blink(count)
 
-
+print(ans1)
 print(sum(count.values()))
