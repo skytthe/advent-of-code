@@ -23,9 +23,10 @@ data = s
 
 data = [x.split() for x in data.split("\n\n")]
 
-passports = [{k: v for k, v in (pair.split(':') for pair in x)} for x in data]
+passports = [{k: v for k, v in (pair.split(':')
+                                for pair in x) if k != "cid"} for x in data]
 
-keywords = [
+keywords = {
     "byr",
     "iyr",
     "eyr",
@@ -33,16 +34,11 @@ keywords = [
     "hcl",
     "ecl",
     "pid",
-    "cid",
-]
+}
 
 ans1 = 0
 for p in passports:
-    flag = True
-    for k in keywords:
-        if k not in p.keys() and k != "cid":
-            flag = False
-    if flag:
+    if keywords == set(p.keys()):
         ans1 += 1
 
 print(ans1)
