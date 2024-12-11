@@ -37,3 +37,10 @@ ans12 = sum(grid[i*1][i*3 % col] == '#' for i in range(row))
 assert ans11 == ans12
 
 print(ans11)
+
+# part 2
+
+ans2 = math.prod(sum(grid[i*a][i*b % col] == '#' for i in range(row//a))
+                 for a, b in [(1, 1), (1, 3), (1, 5), (1, 7), (2, 1)])
+
+print(ans2)
