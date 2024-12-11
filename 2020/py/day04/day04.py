@@ -1,5 +1,7 @@
 
 import sys
+import re
+
 example = """ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
 byr:1937 iyr:2017 cid:147 hgt:183cm
 
@@ -46,3 +48,20 @@ ans12 = sum(keywords == set(p.keys()) for p in passports)
 assert ans11 == ans12
 
 print(ans11)
+
+# part 2
+
+ans2 = 0
+for p in passports:
+    if keywords == set(p.keys()):
+        if ((1920 <= int(p["byr"]) <= 2002) and
+                (2010 <= int(p["iyr"]) <= 2020) and
+                (2020 <= int(p["eyr"]) <= 2030) and
+                ((p["hgt"][-2:] == "cm" and (150 <= int(p["hgt"][:-2]) <= 193)) or (p["hgt"][-2:] == "in" and (59 <= int(p["hgt"][:-2]) <= 76))) and
+                (re.fullmatch(r"#([a-f]|\d){6}", p["hcl"])) and
+                (p["ecl"] in {"amb", "blu", "brn", "gry", "grn", "hzl", "oth"}) and
+                (re.fullmatch(r"\d{9}", p["pid"]))):
+
+            ans2 += 1
+
+print(ans2)
