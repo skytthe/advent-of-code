@@ -1,5 +1,5 @@
 from collections import Counter
-from functools import lru_cache
+from functools import cache
 
 
 example = """125 17""".strip()
@@ -30,6 +30,43 @@ def blink(count):
     return newCount
 
 
+calls2 = 0
+
+
+def blink2(stone, steps):
+    global calls2
+    calls2 += 1
+    if steps == 0:
+        return 1
+    if stone == 0:
+        return blink2(1, steps-1)
+    s = str(stone)
+    length = len(s)
+    if length % 2 == 0:
+        return blink2(int(s[length//2:]), steps-1) + blink2(int(s[:length//2]), steps-1)
+    else:
+        return blink2(stone * 2024, steps-1)
+
+
+calls3 = 0
+
+
+@cache
+def blink3(stone, steps):
+    global calls3
+    calls3 += 1
+    if steps == 0:
+        return 1
+    if stone == 0:
+        return blink3(1, steps-1)
+    s = str(stone)
+    length = len(s)
+    if length % 2 == 0:
+        return blink3(int(s[length//2:]), steps-1) + blink3(int(s[:length//2]), steps-1)
+    else:
+        return blink3(stone * 2024, steps-1)
+
+
 count = Counter(data)
 ans1 = 0
 for i in range(75):
@@ -39,3 +76,19 @@ for i in range(75):
 
 print(ans1)
 print(sum(count.values()))
+
+print()
+
+ans1 = sum([blink2(stone, 25) for stone in data])
+ans1 = sum([blink3(stone, 25) for stone in data])
+
+print(f"blink2(25) calls no cache: {calls2}")
+print(f"blink3(25) calls w. cache: {calls3}")
+
+ans2 = sum([blink3(stone, 75) for stone in data])
+
+print(f"blink3(75) calls w. cache: {calls3}")
+
+print()
+print(ans1)
+print(ans2)
