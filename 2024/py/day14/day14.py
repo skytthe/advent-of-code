@@ -1,6 +1,7 @@
 import sys
 import re
 import pprint
+from PIL import Image
 
 example = """p=0,4 v=3,-3
 p=6,3 v=-1,-3
@@ -63,3 +64,36 @@ ans1 = sum(sum(row) for row in q1) * sum(sum(row) for row in q2) * \
 
 
 print(ans1)
+
+
+def grid_to_image(grid, s, cell_size=1):
+    rows = len(grid)
+    cols = len(grid[0])
+
+    img = Image.new('L', (cols * cell_size, rows * cell_size), color=255)
+    pixels = img.load()
+
+    for row in range(rows):
+        for col in range(cols):
+            color = 0 if grid[row][col] == 0 else 255
+            for x in range(cell_size):
+                for y in range(cell_size):
+                    pixels[col * cell_size + x, row * cell_size + y] = color
+
+    output_path = f"image/img{s}.png"
+    img.save(output_path)
+
+
+s = 0
+for s in range(20000):
+    grid = [[0 for x in range(col)]for y in range(row)]
+    for r in robots:
+        x = (r[0] + s * r[2]) % col
+        y = (r[1] + s * r[3]) % row
+        grid[y][x] += 1
+    # these images has much less randomness
+    if (s-47) % 103 == 0 or (s-82) % 101 == 0:
+        grid_to_image(grid, s)
+    print(s)
+
+# see image 7051, repeat agian in image 17454
