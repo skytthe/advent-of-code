@@ -85,15 +85,41 @@ def grid_to_image(grid, s, cell_size=1):
 
 
 s = 0
-for s in range(20000):
+qq = (float('inf'), -1)
+for s in range(col*row):
     grid = [[0 for x in range(col)]for y in range(row)]
     for r in robots:
         x = (r[0] + s * r[2]) % col
         y = (r[1] + s * r[3]) % row
         grid[y][x] += 1
-    # these images has much less randomness
+    # these images have much less randomness
+    # see image 7051, repeat agian in image 17454
     if (s-47) % 103 == 0 or (s-82) % 101 == 0:
-        grid_to_image(grid, s)
-    print(s)
+        pass
+        # grid_to_image(grid, s)
+    flag = True
+    for y in range(row):
+        for x in range(col):
+            if grid[y][x] > 1:
+                flag = False
+    if flag:
+        print(f"flag> {s}")
 
-# see image 7051, repeat agian in image 17454
+    q1 = [row[:col//2] for row in grid[:row//2]]
+    q2 = [row[col//2+1:] for row in grid[:row//2]]
+    q3 = [row[:col//2] for row in grid[row//2+1:]]
+    q4 = [row[col//2+1:] for row in grid[row//2+1:]]
+
+    # pprint.pprint(q1)
+    # pprint.pprint(q2)
+    # pprint.pprint(q3)
+    # pprint.pprint(q4)
+
+    qsum = sum(sum(row) for row in q1) * sum(sum(row) for row in q2) * \
+        sum(sum(row) for row in q3) * sum(sum(row) for row in q4)
+
+    if qsum < qq[0]:
+        qq = (qsum, s)
+
+
+print(qq)
