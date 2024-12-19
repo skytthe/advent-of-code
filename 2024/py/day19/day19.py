@@ -37,14 +37,14 @@ def possible(pattern):
     return flag
 
 
+ans1 = 0
 ans2 = 0
 
 for design in designs:
-    print(design)
     tmp = possible(design)
-    print(tmp)
+    if tmp > 0:
+        ans1 += 1
     ans2 += tmp
-    # if possible(design):
-    #     ans1 += 1
 
+print(ans1)
 print(ans2)
