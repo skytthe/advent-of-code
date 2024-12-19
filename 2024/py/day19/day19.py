@@ -1,4 +1,5 @@
 import sys
+from functools import cache
 
 example = """r, wr, b, g, bwu, rb, gb, br
 
@@ -25,21 +26,25 @@ towelPatterns = set(a.split(', '))
 designs = b.split()
 
 
+@cache
 def possible(pattern):
-    if pattern in towelPatterns:
-        return True
-    flag = False
+    if len(pattern) == 0:
+        return 1
+    flag = 0
     for p in towelPatterns:
         if pattern.startswith(p):
-            flag = flag or possible(pattern[len(p):])
+            flag += possible(pattern[len(p):])
     return flag
 
 
-ans1 = 0
+ans2 = 0
 
 for design in designs:
-    # print(design)
-    if possible(design):
-        ans1 += 1
+    print(design)
+    tmp = possible(design)
+    print(tmp)
+    ans2 += tmp
+    # if possible(design):
+    #     ans1 += 1
 
-print(ans1)
+print(ans2)
