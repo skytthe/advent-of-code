@@ -67,3 +67,8 @@ for node in tnodes:
 
 
 print(len(cc))
+
+# part 2
+cliques = list(nx.find_cliques(G))
+largest_clique = max(cliques, key=len)
+print(*sorted(largest_clique), sep=',')
