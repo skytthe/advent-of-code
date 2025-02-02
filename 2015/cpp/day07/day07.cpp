@@ -34,41 +34,10 @@ std::uint16_t stoui16(const std::string &str)
     return number;
 }
 
-int main()
+void runCircuit(vector<vector<string>> &gates,
+                unordered_map<string, std::uint16_t> &signals)
 {
-    ifstream file("2015/inputs/day07.txt");
-    if (!file.is_open())
-    {
-        cerr << "Error: Could not open the file." << endl;
-        return 1;
-    }
-
-    queue<vector<string>> q;
-    unordered_map<string, std::uint16_t> signals;
-
-    string line;
-    while (getline(file, line))
-    {
-        istringstream iss(line);
-        vector<string> list;
-        string tmp;
-        while (getline(iss, tmp, ' '))
-        {
-            list.push_back(tmp);
-        }
-
-        if (list.size() == 3 && isDigit(list[0]))
-        {
-            signals[list[2]] = stoui16(list[0]);
-            // cout << list[2] << " : " << list[0] << endl;
-        }
-        else
-        {
-            q.push(list);
-        }
-    }
-
-    signals["1"] = 1;
+    queue<vector<string>> q(deque<vector<string>>(gates.begin(), gates.end()));
 
     // while (!q.empty())
     while (signals.find("a") == signals.end())
@@ -156,13 +125,55 @@ int main()
             }
         }
     }
+}
 
-    // for (const auto &[key, value] : signals)
-    // {
-    //     std::cout << key << ": " << value << "\n";
-    // }
+int main()
+{
+    ifstream file("2015/inputs/day07.txt");
+    if (!file.is_open())
+    {
+        cerr << "Error: Could not open the file." << endl;
+        return 1;
+    }
+
+    vector<vector<string>> g;
+    unordered_map<string, std::uint16_t> signals;
+
+    string line;
+    while (getline(file, line))
+    {
+        istringstream iss(line);
+        vector<string> list;
+        string tmp;
+        while (getline(iss, tmp, ' '))
+        {
+            list.push_back(tmp);
+        }
+
+        if (list.size() == 3 && isDigit(list[0]))
+        {
+            signals[list[2]] = stoui16(list[0]);
+            // cout << list[2] << " : " << list[0] << endl;
+        }
+        else
+        {
+            g.push_back(list);
+        }
+    }
+
+    signals["1"] = 1;
+
+    unordered_map<string, std::uint16_t> s(signals);
+    runCircuit(g, s);
 
     cout << "Part 1:" << endl
+         << s["a"] << endl;
+
+    // part 2
+    signals["b"] = s["a"];
+    runCircuit(g, signals);
+
+    cout << "Part 2:" << endl
          << signals["a"] << endl;
 
     return 0;
