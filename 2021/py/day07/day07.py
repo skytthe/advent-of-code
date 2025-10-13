@@ -14,14 +14,20 @@ data = list(map(int, data))
 maxValue = max(data)
 crabs = defaultdict(int,Counter(data))
 
-minCost = maxValue * sum(crabs.values())
+minCost1 = maxValue * sum(crabs.values())
+minCost2 = maxValue * int((sum(crabs.values())*(sum(crabs.values())+1))/2)
+
 for p in range(maxValue+1):
-    cost = 0
+    cost1 = 0
+    cost2 = 0
 
     for k,v in crabs.items():
-        cost += v * abs(k-p)
+        cost1 += v * abs(k-p)
+        t = abs(k-p)
+        cost2 += v *int((t*(t+1))/2)
 
-    if cost < minCost:
-        minCost = cost
+    minCost1 = min(minCost1, cost1)
+    minCost2 = min(minCost2, cost2)
 
-print(minCost)
+print(minCost1)
+print(minCost2)
