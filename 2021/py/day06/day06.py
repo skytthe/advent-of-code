@@ -1,3 +1,4 @@
+from collections import defaultdict, Counter
 
 example = """3,4,3,1,2""".split(",")
 
@@ -24,3 +25,17 @@ for i in range(days):
 print(len(fishs))
 
 
+fishs2 = defaultdict(int,Counter(data))
+
+days = 256
+for i in range(days):
+    new = defaultdict(int)
+    for j in fishs2.keys():
+        if j != 0:
+            new[j-1] += fishs2[j]
+    new[6] += fishs2[0]
+    new[8] += fishs2[0]
+
+    fishs2 = new
+
+print(sum(fishs2.values()))
