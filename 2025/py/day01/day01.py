@@ -18,23 +18,6 @@ data = example
 data = lines
 
 password1 = 0
-
-dialPosistion = 50
-for l in data:
-    dir, n = l[0], int(l[1:])
-
-    if dir =="L":
-        dialPosistion -= n
-    if dir =="R":
-        dialPosistion += n
-
-    dialPosistion = dialPosistion % 100
-    if dialPosistion == 0:
-        password1 += 1 
-
-print(password1)
-
-
 password2 = 0
 
 dialPosistion = 50
@@ -50,5 +33,8 @@ for l in data:
         dialPosistion = dialPosistion % 100
         if dialPosistion == 0:
             password2 += 1 
+    if dialPosistion == 0:
+        password1 += 1 
 
+print(password1)
 print(password2)
