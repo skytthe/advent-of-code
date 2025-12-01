@@ -17,7 +17,7 @@ with open('2025/py/day01/day01.txt') as f:
 data = example
 data = lines
 
-password = 0
+password1 = 0
 
 dialPosistion = 50
 for l in data:
@@ -30,6 +30,25 @@ for l in data:
 
     dialPosistion = dialPosistion % 100
     if dialPosistion == 0:
-        password += 1 
+        password1 += 1 
 
-print(password)
+print(password1)
+
+
+password2 = 0
+
+dialPosistion = 50
+for l in data:
+    dir, n = l[0], int(l[1:])
+    for i in range(n):
+
+        if dir =="L":
+            dialPosistion -= 1
+        if dir =="R":
+            dialPosistion += 1
+
+        dialPosistion = dialPosistion % 100
+        if dialPosistion == 0:
+            password2 += 1 
+
+print(password2)
