@@ -10,12 +10,22 @@ data = lines
 
 data = [list(map(int, i.split("-"))) for i in data.split(",")]
 
-invalids = 0
+invalids1 = 0
+invalids2 = 0
 for rl,ru in data:
     for i in range(rl,ru+1):
         tmp = str(i)
+        # part 1
         if len(tmp) % 2 == 0:
             if tmp[len(tmp)//2:] == tmp[:len(tmp)//2]:
-                invalids += i
+                invalids1 += i
+        # part 2
+        for l in range(1,len(tmp)//2+1):
+            pattern = tmp[:l]
+            count = tmp.count(pattern)
+            if l*count == len(tmp):
+                invalids2 += i
+                break
 
-print(invalids)
+print(invalids1)
+print(invalids2)
