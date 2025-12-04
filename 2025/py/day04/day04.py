@@ -29,10 +29,6 @@ flag1 = True
 
 
 for _ in range(50):
-    for y in range(len(gridx)):
-        for x in range(len(gridx[y])):
-            gridx[y][x] = grid[y][x]     
-
     for y in range(len(grid)):
         for x in range(len(grid[y])):
             if grid[y][x] == "@":
