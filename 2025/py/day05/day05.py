@@ -19,15 +19,28 @@ data = example
 data = lines
 
 segments, ingredients = data.split("\n\n")
-segments = [s for s in segments.split()]
+segments = [list(map(int,s.split("-"))) for s in segments.split()]
 ingredients = [int(s) for s in ingredients.split()]
 
-fresh = 0
+fresh1 = 0
 for i in ingredients:
-    for s in segments:
-        l,u = s.split("-")
+    for l,u in segments:
         if int(l)<=i<=int(u):
-            fresh += 1
+            fresh1 += 1
             break
 
-print(fresh)
+print(fresh1)
+
+
+segments.sort(key=lambda x : x[0])
+
+fresh2 = 0
+index = 0
+for l,u in segments:
+    if l > index:
+        index = l
+    if u >= index:
+        fresh2 += u-index+1
+        index = u+1
+
+print(fresh2)
