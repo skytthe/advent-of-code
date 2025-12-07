@@ -25,21 +25,20 @@ data = lines
 
 grid = [list(line) for line in data[1:]]
 
-splits1 = 0
+start = data[0].find("S")
+beams = [Counter([start])]
+splits = 0
 
-start2 = data[0].find("S")
-beams2 = [Counter([start2])]
-
-for i, row in enumerate(grid):
-    newBeams2 = Counter()
-    for b, count in beams2[-1].items():
+for row in grid:
+    newBeams = Counter()
+    for b, count in beams[-1].items():
         if row[b] == "^":
-            splits1 += 1
-            newBeams2[b-1] += count
-            newBeams2[b+1] += count
+            splits += 1
+            newBeams[b-1] += count
+            newBeams[b+1] += count
         else:
-            newBeams2[b] += count
-    beams2.append(newBeams2)
+            newBeams[b] += count
+    beams.append(newBeams)
 
-print(splits1)
-print(sum(beams2[-1].values()))
+print(splits)
+print(sum(beams[-1].values()))
