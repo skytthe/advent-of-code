@@ -16,8 +16,6 @@ grid =[list(int(n) for n in line.split()) for line in data[:-1]]
 grid = np.array(grid).T
 opr = data[-1].split()
 
-
-
 ans1 = 0
 for op, vec in zip(opr, grid):
     tmp = 0
@@ -30,7 +28,26 @@ for op, vec in zip(opr, grid):
 print(ans1)
 
 
+grid2 = [list(line) for line in data[:-1]]
 
+ans2 = 0
+idx = 0
+for op in opr:
+    numbers = []
+    flag = True
+    while flag and idx < len(grid2[0]):
+        tmp = ""
+        for i in range(len(grid2)):
+            tmp += grid2[i][idx]
+        if tmp.count(" ") == len(tmp):
+            flag = False
+        else:
+            numbers.append(tmp)
+        idx += 1
+    number = [int(n) for n in numbers]
+    if op == "+":
+        ans2 += np.sum(np.array(number))
+    elif op == "*":
+        ans2 += np.prod(np.array(number))
 
-
-
+print(ans2)
