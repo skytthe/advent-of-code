@@ -47,3 +47,10 @@ for d,n1,n2 in distances[:1000]:
 
 cc = [len(c) for c in sorted(nx.connected_components(G), key=len, reverse=True)]
 print(np.array(cc[:3]).prod())
+
+for d,n1,n2 in distances[1000:10000]:
+    G.add_edge(tuple(n1),tuple(n2))
+    cc = [len(c) for c in sorted(nx.connected_components(G), key=len, reverse=True)]
+    if len(cc) == 1:
+        print(n1[0]*n2[0])
+        break
