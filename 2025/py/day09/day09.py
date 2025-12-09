@@ -105,22 +105,22 @@ print(biggest2)
 
 
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
-x_vals1 = [p[0] for p in data]
-y_vals1 = [p[1] for p in data]
+# x_vals1 = [p[0] for p in data]
+# y_vals1 = [p[1] for p in data]
 
-x_vals2 = [p[0] for p in bbox]
-y_vals2 = [p[1] for p in bbox]
+# x_vals2 = [p[0] for p in bbox]
+# y_vals2 = [p[1] for p in bbox]
 
-x_vals3 = [p[0] for p in bp]
-y_vals3 = [p[1] for p in bp]
+# x_vals3 = [p[0] for p in bp]
+# y_vals3 = [p[1] for p in bp]
 
-plt.plot(x_vals1, y_vals1, marker='o')
-plt.plot(x_vals2, y_vals2)
-plt.plot(x_vals3, y_vals3, marker='x')
-plt.xlabel("X")
-plt.ylabel("Y")
-plt.title("Line Plot Through Points")
-plt.grid(True)
-plt.show()
+# plt.plot(x_vals1, y_vals1, marker='o')
+# plt.plot(x_vals2, y_vals2)
+# plt.plot(x_vals3, y_vals3, marker='x')
+# plt.xlabel("X")
+# plt.ylabel("Y")
+# plt.title("Line Plot Through Points")
+# plt.grid(True)
+# plt.show()
