@@ -57,15 +57,19 @@ data = lines
 
 data = [list(map(int, line.split(","))) for line in data]
 
+rectangles = []
+
 biggest1 = 0
 for i in range(len(data)-1):
     for j in range(i,len(data)):
         area = (abs(data[i][0]-data[j][0])+1)*(abs(data[i][1]-data[j][1])+1)
         if area > biggest1:
             biggest1 = area
+        rectangles.append((i,j,area))
 
 print(biggest1)
 
+rectangles.sort(key=lambda x : x[2],reverse=True)
 
 data.append(data[0])
 lines = []
@@ -75,30 +79,30 @@ for (x1, y1), (x2, y2) in zip(data, data[1:]):
 biggest2 = 0
 bp =[]
 bbox =[]
-for i in range(len(data)-1):
-    for j in range(i,len(data)):
-        area = (abs(data[i][0]-data[j][0])+1)*(abs(data[i][1]-data[j][1])+1)
-        if area >= biggest2:
-            x1,y1 = data[i][0],data[i][1]
-            x2,y2 = data[j][0],data[j][1]
+for i,j,area in rectangles:
+    if area >= biggest2:
+        x1,y1 = data[i][0],data[i][1]
+        x2,y2 = data[j][0],data[j][1]
 
-            top_left     = (min(x1, x2) + 0.5, min(y1, y2) + 0.5)
-            top_right    = (max(x1, x2) - 0.5, min(y1, y2) + 0.5)
-            bottom_left  = (min(x1, x2) + 0.5, max(y1, y2) - 0.5)
-            bottom_right = (max(x1, x2) - 0.5, max(y1, y2) - 0.5)
+        top_left     = (min(x1, x2) + 0.5, min(y1, y2) + 0.5)
+        top_right    = (max(x1, x2) - 0.5, min(y1, y2) + 0.5)
+        bottom_left  = (min(x1, x2) + 0.5, max(y1, y2) - 0.5)
+        bottom_right = (max(x1, x2) - 0.5, max(y1, y2) - 0.5)
 
-            box = [top_right,top_left,bottom_left, bottom_right,top_right]            
+        box = [top_right,top_left,bottom_left, bottom_right,top_right]            
 
-            intersect = any(
-                lines_intersect(p1, p2, lp1, lp2)
-                for lp1, lp2 in lines
-                for p1, p2 in zip(box,box[1:])
-            )            
+        intersect = any(
+            lines_intersect(p1, p2, lp1, lp2)
+            for lp1, lp2 in lines
+            for p1, p2 in zip(box,box[1:])
+        )            
 
-            if not intersect:
-                biggest2 = area
-                bp = [(x1,y1),(x2,y2)]
-                bbox = box
+        if not intersect:
+            biggest2 = area
+            bp = [(x1,y1),(x2,y2)]
+            bbox = box
+    else:
+        break
     
 print(biggest2)
 
