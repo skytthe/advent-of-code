@@ -39,6 +39,43 @@ def lines_intersect(p1, p2, p3, p4):
 
     return False
 
+def segments_intersect(p1, p2, p3, p4):
+    x1, y1 = p1
+    x2, y2 = p2
+    x3, y3 = p3
+    x4, y4 = p4
+
+    # Line 1 vertical?
+    v1 = (x1 == x2)
+    # Line 2 vertical?
+    v2 = (x3 == x4)
+
+    # Case 1: both vertical
+    if v1 and v2:
+        # Must share same x
+        if x1 != x3:
+            return False
+        # Check overlap in y
+        return not (max(y1, y2) < min(y3, y4) or max(y3, y4) < min(y1, y2))
+
+    # Case 2: both horizontal
+    if not v1 and not v2:
+        # Must share same y
+        if y1 != y3:
+            return False
+        # Check overlap in x
+        return not (max(x1, x2) < min(x3, x4) or max(x3, x4) < min(x1, x2))
+
+    # Case 3: perpendicular (one vertical)
+    if v1:
+        # L1 vertical, L2 horizontal
+        return (min(x3, x4) <= x1 <= max(x3, x4) and
+                min(y1, y2) <= y3 <= max(y1, y2))
+    else:
+        # L1 horizontal, L2 vertical
+        return (min(x1, x2) <= x3 <= max(x1, x2) and
+                min(y3, y4) <= y1 <= max(y3, y4))
+
 
 example = """7,1
 11,1
@@ -92,7 +129,8 @@ for i,j,area in rectangles:
         box = [top_right,top_left,bottom_left, bottom_right,top_right]            
 
         intersect = any(
-            lines_intersect(p1, p2, lp1, lp2)
+            segments_intersect(p1, p2, lp1, lp2)
+            # lines_intersect(p1, p2, lp1, lp2)
             for lp1, lp2 in lines
             for p1, p2 in zip(box,box[1:])
         )            
