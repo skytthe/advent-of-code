@@ -11,7 +11,7 @@ with open('2025/py/day10/day10.txt') as f:
     lines = [line.strip() for line in f.readlines()]
 
 data = example
-data = lines
+# data = lines
 
 goals = []
 actions = []
@@ -23,10 +23,10 @@ for line in data:
     action = re.findall(r"\((.*?)\)", line)
     actions.append([list(map(int,line.split(","))) for line in action])
     jolt = re.findall(r"\{(.*?)\}", line)
-    jolts.append(jolt[0])
+    jolts.append(list(map(int,jolt[0].split(","))))
 
 
-def doAction(s,action):
+def doAction1(s,action):
     s = list(s)
     for i in action:
         idx = int(i)
@@ -49,7 +49,7 @@ for e, g in enumerate(goals):
     while q:
         stp, tmp = q.popleft()
         for a in actions[e]:
-            new = doAction(tmp, a)
+            new = doAction1(tmp, a)
             if new == g:
                 found = stp
                 break
@@ -61,3 +61,46 @@ for e, g in enumerate(goals):
     ans1 += found
 
 print(ans1)
+
+
+
+
+
+def doAction2(l,action):
+    tmp = l.copy()
+    for i in action:
+        idx = int(i)
+        tmp[idx] += 1
+    return tmp
+
+
+ans2 = 0
+for e, g in enumerate(jolts):
+    print(g)
+    print(actions[e])
+    start = [0]*len(g)
+    found = None
+
+    q = deque()
+    q.append((1,start))
+    while q:
+        stp, tmp = q.popleft()
+        for a in actions[e]:
+            new = doAction2(tmp, a)
+            if new == g:
+                found = stp
+                break
+            else:
+                flag = True
+                for x, y in zip(new, g):
+                    if x > y:
+                        flag = False
+                if flag:
+                    q.append((stp+1,new))
+        if found != None:
+            break
+    
+    ans2 += found
+    print(f"found: {found}")
+
+print(ans2)
