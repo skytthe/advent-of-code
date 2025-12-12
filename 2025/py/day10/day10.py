@@ -1,6 +1,7 @@
 from pprint import pprint
 import re
 from collections import deque
+import pulp
 
 
 example = """[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}
@@ -11,7 +12,7 @@ with open('2025/py/day10/day10.txt') as f:
     lines = [line.strip() for line in f.readlines()]
 
 data = example
-# data = lines
+data = lines
 
 goals = []
 actions = []
@@ -63,44 +64,27 @@ for e, g in enumerate(goals):
 print(ans1)
 
 
-
-
-
-def doAction2(l,action):
-    tmp = l.copy()
-    for i in action:
-        idx = int(i)
-        tmp[idx] += 1
-    return tmp
-
-
 ans2 = 0
-for e, g in enumerate(jolts):
-    print(g)
-    print(actions[e])
-    start = [0]*len(g)
-    found = None
+for e, jolt in enumerate(jolts):
+    prob = pulp.LpProblem("MinSum", pulp.LpMinimize)
 
-    q = deque()
-    q.append((1,start))
-    while q:
-        stp, tmp = q.popleft()
-        for a in actions[e]:
-            new = doAction2(tmp, a)
-            if new == g:
-                found = stp
-                break
-            else:
-                flag = True
-                for x, y in zip(new, g):
-                    if x > y:
-                        flag = False
-                if flag:
-                    q.append((stp+1,new))
-        if found != None:
-            break
-    
-    ans2 += found
-    print(f"found: {found}")
+    A = [[0 for _ in range(len(actions[e]))] for _ in range(len(jolt))]
+    for idx, ac in enumerate(actions[e]):
+        for a in ac:
+            A[a][idx] += 1
+
+    x = [pulp.LpVariable(f"x{i}", lowBound=0, cat='Integer') for i in range(len(actions[e]))]
+
+    b = jolt
+
+    c = [1]*len(actions[e])
+
+    prob += pulp.lpSum(x)
+    for i in range(len(jolt)):
+        prob += pulp.lpSum(A[i][j]*x[j] for j in range(len(actions[e]))) == b[i]
+
+    prob.solve(pulp.PULP_CBC_CMD(msg=False))
+
+    ans2 += int(sum([v.varValue for v in x]))
 
 print(ans2)
