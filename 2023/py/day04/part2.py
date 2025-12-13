@@ -1,0 +1,29 @@
+import sys
+
+example = """Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
+Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
+Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1
+Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83
+Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
+Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11""".split("\n")
+
+with open('2023/py/day04/input.txt') as f:
+    lines = [line.strip() for line in f.readlines()]
+
+data = example
+data = lines
+
+number_of_cards = [1 for _ in range(len(data))]
+
+for id, card in enumerate(data):
+    left, right = card.split(":")[1].split("|")
+
+    winning_numbers = {n for n in left.split(" ") if n.isdigit()}  # - {''}
+    elfs_numbers = {n for n in right.strip().split(" ")} - {''}
+
+    matches = len(set.intersection(winning_numbers, elfs_numbers))
+
+    for i in range(matches):
+        number_of_cards[id+1+i] += number_of_cards[id]
+
+print(sum(number_of_cards))
