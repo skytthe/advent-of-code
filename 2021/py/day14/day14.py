@@ -1,6 +1,7 @@
 import numpy as np
 from collections import defaultdict, Counter
 from pprint import pprint
+from functools import cache
 
 example = """NNCB
 
@@ -41,7 +42,25 @@ for i in range(steps):
     new.append(polymerTemplate[-1])
     polymerTemplate = new
 
+# scores = sorted(Counter(polymerTemplate).values(),reverse=True)
+# print(scores[0]-scores[-1])
 
-scores = sorted(Counter(polymerTemplate).values(),reverse=True)
-print(scores[0]-scores[-1])
 
+@cache
+def constructPolymer(polymerTemplate : str, depth : int) -> Counter:
+    if depth == 0:
+        return Counter(polymerTemplate)
+    elif len(polymerTemplate) == 2:
+        tmp = polymerTemplate[0] + pairInsertionRules[polymerTemplate] + polymerTemplate[1]
+        return constructPolymer(tmp, depth-1)
+    else:
+        count = constructPolymer(polymerTemplate[:2], depth) + constructPolymer(polymerTemplate[1:], depth)
+        count[polymerTemplate[1]] -= 1
+        return count
+
+
+scores1 = sorted(constructPolymer(data[0],steps).values(),reverse=True)
+print(scores1[0]-scores1[-1])
+
+scores2 = sorted(constructPolymer(data[0],40).values(),reverse=True)
+print(scores2[0]-scores2[-1])
