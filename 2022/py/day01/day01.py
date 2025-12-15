@@ -21,6 +21,9 @@ with open('2022/py/day01/day01.txt') as f:
 data = example
 data = lines
 
-ans1 = max([sum(list(map(int,l.split("\n")))) for l in data.split("\n\n")])
+cals = [sum(list(map(int,l.split("\n")))) for l in data.split("\n\n")]
+ans1 = max(cals)
+ans2 = sum(sorted(cals, reverse=True)[:3])
 
 print(ans1)
+print(ans2)
