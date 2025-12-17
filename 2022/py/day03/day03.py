@@ -25,3 +25,13 @@ for r1,r2 in data:
     
 print(ans1)
 
+
+ans2 = 0
+for i in range(len(data)//3):
+    s1 = set(data[i*3+0][0]).union(data[i*3+0][1])
+    s2 = set(data[i*3+1][0]).union(data[i*3+1][1])
+    s3 = set(data[i*3+2][0]).union(data[i*3+2][1])
+    intersect = list(s1.intersection(s2.intersection(s3)))[0]
+    ans2 += ord(intersect)-65+27 if intersect.isupper() else ord(intersect)-96
+
+print(ans2)
