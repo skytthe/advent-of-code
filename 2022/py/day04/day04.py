@@ -17,7 +17,11 @@ data = lines
 data = [sorted([list(map(int, secs.split("-"))) for secs in line.split(",")], key=lambda x : (x[0],-x[1])) for line in data]
 
 ans1 = 0
+ans2 = 0
 for p1, p2 in data:
     ans1 += 1 if p1[0] <= p2[0] and p1[1] >= p2[1] else 0
+    ans2 += 1 if  ((p1[0] <= p2[0] and p1[1] >= p2[0])
+                or (p1[1] >= p2[1] and p1[0] <= p2[1])) else 0
         
 print(ans1)
+print(ans2)
