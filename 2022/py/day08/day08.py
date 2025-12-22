@@ -1,3 +1,4 @@
+import math
 
 example = """30373
 25512
@@ -54,3 +55,28 @@ for c in range(C):
             prev = cur
 
 print(len(visible))
+
+
+def scan2(x, y, dx, dy, grid, R, C):
+    height = grid[y][x]
+    cx,cy = x+dx,y+dy
+    score = 0
+    while 0 <= cy < R and 0 <= cx < C:
+        score += 1
+        if grid[cy][cx] >= height:
+            break
+        cx,cy = cx+dx,cy+dy
+    return score
+
+neighbors = [(1,0),(-1,0),(0,1),(0,-1)]
+
+ans2 = 0
+for x,y in visible:
+    scenicScore = []
+    for dx,dy in neighbors:
+        scenicScore.append(scan2(x, y, dx, dy, grid, R, C))
+    tmp = math.prod(scenicScore)
+    if tmp > ans2:
+        ans2 = tmp
+
+print(ans2)
