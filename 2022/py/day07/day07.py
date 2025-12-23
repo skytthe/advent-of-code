@@ -30,7 +30,7 @@ with open('2022/py/day07/day07.txt') as f:
     lines = [line.strip() for line in f.readlines()]
 
 data = example
-# data = lines
+data = lines
 
 data = deque(data)
 
@@ -45,16 +45,58 @@ class Folder:
     parent: Optional[Folder] = None
     files: List[File] = field(default_factory=list)
     subfolders: List[Folder] = field(default_factory=list)
+    size: int = 0
+    def calcSize(self):
+        self.size = sum([f.size for f in self.files])
+        self.size += sum([f.calcSize() for f in self.subfolders])
+        return self.size
+    def getFolder(self, fname : str):
+        for f in self.subfolders:
+            if fname == f.name:
+                return f
 
-
-def calcSize():
-    pass
-
-pointer = ""
-files = dict()
-folders = dict()
+pointer = None
+folders = []
 
 while data:
-    print(data.popleft())
+    cmds = data.popleft().split(" ")
+    if cmds[0] == "$":
+        if cmds[1] == "cd":
+            if cmds[2] == "..":
+                pointer = pointer.parent
+            else:
+                folderName = cmds[2]
+                if pointer == None:
+                    newFolder = Folder(folderName)
+                    folders.append(newFolder)
+                    pointer = newFolder
+                else:
+                    pointer = pointer.getFolder(folderName)
+            pass
+        elif cmds[1] == "ls":
+            continue
+        else:
+            assert False
+    else:
+        if cmds[0] == "dir":
+            folderName = cmds[1]
+            newFolder = Folder(folderName,pointer)
+            folders.append(newFolder)
+            pointer.subfolders.append(newFolder)
+        else:
+            assert cmds[0].isdigit()
+
+            filesize = int(cmds[0])
+            filename = cmds[1]
+            newFile = File(filename,filesize)
+            pointer.files.append(newFile)
 else:
-    print("Done")
+    diskUsage = folders[0].calcSize()
+
+
+ans1 = 0
+for f in folders:
+    if f.size <= 100000:
+        ans1 += f.size
+
+print(ans1)
