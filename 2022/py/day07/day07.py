@@ -95,8 +95,12 @@ else:
 
 
 ans1 = 0
+ans2 = 70000000
 for f in folders:
     if f.size <= 100000:
         ans1 += f.size
+    if (70000000-diskUsage)+f.size >= 30000000:
+        ans2 = min(ans2,f.size)
 
 print(ans1)
+print(ans2)
