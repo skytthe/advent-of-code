@@ -162,7 +162,7 @@ data = lines
 X = 1   
 cycles = 0
 
-hist = [0]
+hist = []
 
 for cmd in data:
     if cmd == "noop":
@@ -178,7 +178,17 @@ for cmd in data:
 ans1 = 0
 idx = 20
 while idx < len(hist):
-    ans1 += hist[idx] * idx
+    ans1 += hist[idx-1] * idx
     idx += 40
 
 print(ans1)
+
+
+grid = [[" "]*40 for _ in range(6)]
+for i in range(240):
+    x = i % 40
+    y = i // 40
+    if x-1 <= hist[i] <= x+1:
+        grid[y][x] = "#"
+
+print("\n".join(["".join(line) for line in grid]))
