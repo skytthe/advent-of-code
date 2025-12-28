@@ -41,3 +41,22 @@ while q:
                     q.append(((nx,ny), cost+1))
                     visited.add((nx,ny))
 
+
+
+
+visited = {end}
+
+q = deque()
+q.append((end, 0))
+while q:
+    pos, cost = q.popleft()
+    if grid[pos[1]][pos[0]] == ord("a"):
+        print(cost)
+        break
+    for dx,dy in moves:
+        nx,ny = pos[0]+dx, pos[1]+dy
+        if 0 <= nx < C and 0 <= ny < R:
+            if grid[ny][nx] >= grid[pos[1]][pos[0]]-1:
+                if (nx,ny) not in visited:
+                    q.append(((nx,ny), cost+1))
+                    visited.add((nx,ny))
