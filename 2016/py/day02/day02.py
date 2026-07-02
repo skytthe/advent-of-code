@@ -30,3 +30,22 @@ for line in data:
     pw += str(keypad[pos[1]][pos[0]])
 
 print(pw)
+
+
+keypad2 = [
+[" "," ", "1", " ", " ",],
+[" ","2", "3", "4", " ",],
+["5","6", "7", "8", "9",],
+[" ","A", "B", "C", " ",],
+[" "," ", "D", " ", " ",],]
+
+pw2 = ""
+pos2 = np.array([0,2])
+for line in data:
+    for move in line:
+        tmp2 = pos2 + moves[move]
+        if np.all((tmp2 >= 0) & (tmp2 <= 4)) and keypad2[tmp2[1]][tmp2[0]] != " ":
+            pos2 = tmp2
+    pw2 += str(keypad2[pos2[1]][pos2[0]])
+
+print(pw2)
