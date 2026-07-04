@@ -32,7 +32,10 @@ for line in data:
         counters[n].update(ch)
 
 ans = ""
+ans2 = ""
 for c in counters:
     ans += c.most_common()[0][0]
+    ans2 += c.most_common()[-1][0]
 
 print(ans)
+print(ans2)
